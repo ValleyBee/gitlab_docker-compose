@@ -1,5 +1,5 @@
 FROM centos:stream8
-MAINTAINER Valentyn 'valley@mail.ru'
+LABEL MAINTAINER Valentyn 'valley@mail.ru'
 RUN yum update -y
 
 RUN dnf -y module install python39 && \
