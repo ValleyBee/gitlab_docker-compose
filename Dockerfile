@@ -5,12 +5,16 @@ ENV TZ=Europe/Kiev
 
 RUN apt-get update -y
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt-get install -y curl openssh-server ca-certificates tzdata perl gnupg apt-transport-https
-# RUN apt clean all
+RUN apt-get install -y openssh-server ca-certificates tzdata perl 
+RUN apt-get install -q -y curl 
+RUN apt-get install -y gnupg 
+RUN apt-get update -y
+RUN apt-get install -y apt-transport-https
 RUN curl -L https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey | apt-key add -
+RUN apt-get update -y
 RUN echo  "deb https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu/ focal main" > /etc/apt/sources.list.d/gitlab_gitlab-ce.list
 
-RUN apt-get update -y
+
 
 # Enable OpenSSH server daemon if not enabled: sudo systemctl status sshd
 # RUN systemctl enable sshd
@@ -27,9 +31,9 @@ RUN apt-get update -y
 #RUN dnf clean all
 # ENV dist=focal
 # ENV os=ubuntu
-# RUN curl -sS  https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh 
+RUN dist="focal" ; os="ubuntu" ; curl -sS  https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
 
-# RUN curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh os=el dist=7
+# RUN curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh 
 # | sudo bash
 
 RUN EXTERNAL_URL="https://gitlab.valleybee.home" apt-get install -y gitlab-ce
