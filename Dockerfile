@@ -14,6 +14,7 @@ RUN curl -L https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey | apt-key add -
 RUN apt-get update -y
 RUN echo  "deb https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu/ focal main" > /etc/apt/sources.list.d/gitlab_gitlab-ce.list
 
+# RUN echo -e 'DISTRIB_ID=Ubuntu\nDISTRIB_RELEASE=20.04\nDISTRIB_CODENAME=focal\nDISTRIB_DESCRIPTION="Ubuntu 20.04.4 LTS" ' > /etc/lsb-release 
 
 
 # Enable OpenSSH server daemon if not enabled: sudo systemctl status sshd
@@ -31,8 +32,13 @@ RUN echo  "deb https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu/ focal main" 
 #RUN dnf clean all
 # ENV dist=focal
 # ENV os=ubuntu
-RUN dist="focal" ; os="ubuntu" ; curl -sS  https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
-
+# RUN echo $PWD $HOME
+# RUN echo test > $HOME/.test.sh
+# RUN ls -la /root
+RUN curl -sS  https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh > $HOME/.script.sh 
+RUN chmod a+x $HOME/.script.sh
+RUN  ls -la /root
+RUN $HOME/.script.sh
 # RUN curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh 
 # | sudo bash
 
@@ -44,8 +50,8 @@ RUN EXTERNAL_URL="https://gitlab.valleybee.home" apt-get install -y gitlab-ce
 
 
 #RUN pip3 install ansible --user
-COPY . /app
+#COPY . /app
 
-WORKDIR /app
+#WORKDIR /app
 
 # RUN pip3.9 install -r req.txt
