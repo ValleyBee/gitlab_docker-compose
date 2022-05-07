@@ -1,0 +1,65 @@
+FROM oraclelinux/85:arm64 
+
+LABEL MAINTAINER Valentyn 'valley@mail.ru'
+
+RUN yum update -y
+RUN yum install -y curl policycoreutils openssh-server openssh-clients
+
+# RUN yum install -y curl 
+# RUN yum install -y gnupg 
+
+
+# RUN curl -L https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey | apt-key add -
+
+
+RUN yum install -y python3
+RUN yum install -y python3-pip
+RUN python3 -m pip install --upgrade pip
+RUN yum update -y
+
+COPY gitlab_gitlab-ce.repo /etc/yum.repos.d/
+RUN ls -la /etc/yum.repos.d/
+RUN yum -q makecache -y --disablerepo='*' --enablerepo='gitlab_gitlab-ce'
+
+
+# RUN echo -e 'DISTRIB_ID=Ubuntu\nDISTRIB_RELEASE=20.04\nDISTRIB_CODENAME=focal\nDISTRIB_DESCRIPTION="Ubuntu 20.04.4 LTS" ' > /etc/lsb-release 
+
+
+# Enable OpenSSH server daemon if not enabled: sudo systemctl status sshd
+# RUN systemctl enable sshd
+# RUN systemctl start sshd
+
+# Check if opening the firewall is needed with: sudo systemctl status firewalld
+#RUN firewall-cmd --permanent --add-service=http
+#RUN firewall-cmd --permanent --add-service=https
+#RUN systemctl reload firewalld
+
+
+# RUN dnf -y module install python39 && \
+# 	dnf clean all
+#RUN dnf clean all
+ENV dist=8
+ENV os=el
+# RUN echo $PWD $HOME
+# RUN echo test > $HOME/.test.sh
+# RUN ls -la /root
+RUN cut -f5 --delimiter=' ' /etc/oracle-release | awk -F '.' '{ print $1 }'
+
+RUN curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh > $HOME/.script.sh 
+RUN chmod a+x $HOME/.script.sh
+# RUN  ls -la /root
+RUN $HOME/.script.sh
+
+RUN EXTERNAL_URL="https://gitlab.valleybee.home" yum install -y gitlab-ce
+
+
+# RUN yum -y install python39-pip && \
+# 	dnf clean all 
+
+
+#RUN pip3 install ansible --user
+# COPY . /app
+
+# WORKDIR /app
+
+# RUN pip3.9 install -r req.txt
