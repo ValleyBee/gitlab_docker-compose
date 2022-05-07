@@ -1,20 +1,19 @@
 version: '3.6'
 services:
   web:
-    image: 'gitlab/gitlab-ee:latest'
+    image: 'localhost:5000/gitlab/gitlab-ce:arm64'
+    port: 80:80
     restart: always
-    hostname: 'gitlab.valleybee.com'
+    hostname: 'gitlab.valleybee.home'
     environment:
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://gitlab.valleybee.com:8929'
+        external_url 'http://gitlab.valleybee.home:8929'
         gitlab_rails['gitlab_shell_ssh_port'] = 2224
     ports:
       - '8929:80'
       - '2224:22'
     volumes:
-      - '$GITLAB_HOME/config:/etc/gitlab'
-      - '$GITLAB_HOME/logs:/var/log/gitlab'
-      - '$GITLAB_HOME/data:/var/opt/gitlab'
+      - '$PWD/config:/etc/gitlab'
+      - '$PWD/logs:/var/log/gitlab'
+      - '$PWD/data:/var/opt/gitlab'
     shm_size: '256m'
-
-    #

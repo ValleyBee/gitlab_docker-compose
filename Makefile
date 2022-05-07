@@ -1,14 +1,12 @@
 test:
-	sudo podman run --detach \
-  --hostname gitlab.valleybee.com \
-  --env GITLAB_OMNIBUS_CONFIG="external_url 'http://my.domain.com/'; gitlab_rails['lfs_enabled'] = true;" \
-  --publish 443:443 --publish 80:80 --publish 22:22 \
+	podman run -ti  --rm \
+  --hostname gitlab.valleybee.home \
+  --publish 443:443 --publish 8929:80 --publish 2224:22 \
   --name gitlab \
-  --restart always \
-  --volume $GITLAB_HOME/config:/etc/gitlab \
-  --volume $GITLAB_HOME/logs:/var/log/gitlab \
-  --volume $GITLAB_HOME/data:/var/opt/gitlab \
+  --volume ${PWD}/config:/etc/gitlab:Z \
+  --volume ${PWD}/logs:/var/log/gitlab:Z \
+  --volume ${PWD}/data:/var/opt/gitlab:Z \
   --shm-size 256m \
-  gitlab/gitlab-ee:latest
+  gitlab/gitlab-ce:arm64 /bin/bash
 run:
-sudo pod
+	podman run -ti --rm -v /logs:/var/log/:Z  -p 8929:80 --name gitlab gitlab/gitlab-ce:arm64 
